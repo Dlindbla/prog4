@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +50,10 @@ public class MusicOrganizerController {
 		//get the currently selected album
 		Album selectedAlbum = view.getSelectedAlbum();
 		//create a new album
-		Album newAlbum = new Album("new album", selectedAlbum);
+
+		String albumName = view.promptForAlbumName();
+
+		Album newAlbum = new Album(albumName, selectedAlbum);
 		//add the new album to the selected one
 		selectedAlbum.addSubAlbum(newAlbum);
 		//add the album to the treeview
@@ -61,7 +65,12 @@ public class MusicOrganizerController {
 	 * Removes an album from the Music Organizer
 	 */
 	public void deleteAlbum(){ //TODO Update parameters if needed
-		// TODO: Add your code here
+		Album albumToRemove = view.getSelectedAlbum();
+		//remove from view
+		view.onAlbumRemoved(albumToRemove);
+
+
+
 	}
 	
 	/**
@@ -74,9 +83,13 @@ public class MusicOrganizerController {
 	/**
 	 * Removes sound clips from an album
 	 */
-	public void removeSoundClips(){ //TODO Update parameters if needed
+	public void removeSoundClips(){
+
 		Album selectedAlbum = view.getSelectedAlbum();
-		selectedAlbum.removeSoundClips(selectedAlbum.getSoundClips());
+		List<SoundClip> soundClipsToDelete = view.getSelectedSoundClips();
+		selectedAlbum.removeSoundClips(soundClipsToDelete);
+		view.onClipsUpdated();
+
 	}
 	
 	/**
