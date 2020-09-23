@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -9,8 +8,6 @@ public class MusicOrganizerController {
 	private Album root;
 	
 	public MusicOrganizerController() {
-		
-		// TODO: Create the root album for all sound clips
 		root = new Album("All Sound Clips");
 		
 		// Create the View in Model-View-Controller
@@ -45,39 +42,45 @@ public class MusicOrganizerController {
 	/**
 	 * Adds an album to the Music Organizer
 	 */
-	public void addNewAlbum(){ //TODO Update parameters if needed - e.g. you might want to give the currently selected album as parameter
-		// TODO: Add your code here
+	public void addNewAlbum(){
 		//get the currently selected album
 		Album selectedAlbum = view.getSelectedAlbum();
-		//create a new album
 
+		//create a new album
 		String albumName = view.promptForAlbumName();
 
-		Album newAlbum = new Album(albumName, selectedAlbum);
-		//add the new album to the selected one
-		selectedAlbum.addSubAlbum(newAlbum);
-		//add the album to the treeview
-		view.onAlbumAdded(newAlbum);
+		if (selectedAlbum != null && albumName != null) {
+			Album newAlbum = new Album(albumName);
 
+			//add the new album to the selected one
+			selectedAlbum.addSubAlbum(newAlbum);
+	
+			//add the album to the treeview
+			view.onAlbumAdded(newAlbum);
+		}
 	}
 	
 	/**
 	 * Removes an album from the Music Organizer
 	 */
-	public void deleteAlbum(){ //TODO Update parameters if needed
+	public void deleteAlbum(){
 		Album albumToRemove = view.getSelectedAlbum();
-		//remove from view
-		view.onAlbumRemoved(albumToRemove);
 
+		if (albumToRemove != root) {
+			view.onAlbumRemoved(albumToRemove);
 
-
+			albumToRemove.getParentAlbum().removeSubAlbum(albumToRemove);
+		}
 	}
 	
 	/**
 	 * Adds sound clips to an album
 	 */
-	public void addSoundClips(){ //TODO Update parameters if needed
-		// TODO: Add your code here
+	public void addSoundClips(){
+		Album selectedAlbum = view.getSelectedAlbum();
+		List<SoundClip> selectedSoundClips = view.getSelectedSoundClips();
+
+		selectedAlbum.addSoundClips(selectedSoundClips);
 	}
 	
 	/**

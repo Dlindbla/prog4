@@ -1,7 +1,6 @@
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -91,11 +90,7 @@ public class MusicOrganizerWindow extends JFrame {
 				// if left-double-click @@@changed =2 to ==1
 				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2){
 					
-					// TODO YOUR CODE HERE
-					// The code here gets invoked whenever the user double clicks in the album tree
 					Album selectedAlbum = (Album) getSelectedTreeNode().getUserObject();
-
-					//ArrayList<SoundClip> soundClipList = selectedAlbum.getSoundClips();
 
 					clipTable.display(selectedAlbum);
 					
@@ -118,13 +113,9 @@ public class MusicOrganizerWindow extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				// if left-double-click @@@changed =2 to ==1
 				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2){
-					
-					// TODO YOUR CODE HERE
-					// The code here gets invoked whenever the uses double clicks on the list of sound clips
+					controller.playSoundClips();
 					
 					System.out.println("clicked on clipTable");
-					
-					
 				}
 			}
 		});
@@ -208,10 +199,7 @@ public class MusicOrganizerWindow extends JFrame {
 		for(Enumeration e = ((DefaultMutableTreeNode) model.getRoot()).breadthFirstEnumeration(); e.hasMoreElements();){
 			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) e.nextElement();
 			
-			// TODO: Get the parent album of newAlbum
-			Album parentAlbum;
-			parentAlbum = newAlbum.getParentAlbum();
-			
+			Album parentAlbum = newAlbum.getParentAlbum();
 			
 			if(parentAlbum.equals(parent.getUserObject())){
 				
