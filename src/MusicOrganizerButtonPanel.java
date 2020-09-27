@@ -18,6 +18,8 @@ public class MusicOrganizerButtonPanel extends JPanel {
 	private JButton removeSoundClipsButton;	
 	private JButton playButton;
 
+	private JButton undoButton;
+	private JButton redoButton;
 	
 	public MusicOrganizerButtonPanel(MusicOrganizerController contr, MusicOrganizerWindow view){
 		super(new BorderLayout());
@@ -42,7 +44,13 @@ public class MusicOrganizerButtonPanel extends JPanel {
 
 		playButton = createPlayButton();
 		toolbar.add(playButton);
-		
+
+		undoButton = createUndoButton();
+		toolbar.add(undoButton);
+
+		redoButton = createRedoButton();
+		toolbar.add(redoButton);
+
 		this.add(toolbar);
 
 	}
@@ -121,5 +129,30 @@ public class MusicOrganizerButtonPanel extends JPanel {
 		});
 		return playButton;
 	}
+
+	private JButton createUndoButton(){
+		JButton undoButton = new JButton("undo");
+		undoButton.setToolTipText("Undo Latest Action");
+		undoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				controller.undo();
+			}
+		});
+		return undoButton;
+	}
+
+	private JButton createRedoButton(){
+		JButton redoButton = new JButton("redo");
+		redoButton.setToolTipText("Redo Latest Action");
+		redoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				controller.redo();
+			}
+		});
+		return redoButton;
+	}
+
 
 }

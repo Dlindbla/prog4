@@ -1,12 +1,17 @@
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 public class MusicOrganizerController {
 
 	private MusicOrganizerWindow view;
 	private SoundClipBlockingQueue queue;
 	private Album root;
-	
+
+	//stacks for running undo and redo commands
+	private Stack<Command> undoStack = new Stack<>();
+	private Stack<Command> redoStack = new Stack<>();
+
 	public MusicOrganizerController() {
 		root = new Album("All Sound Clips");
 		
@@ -18,6 +23,9 @@ public class MusicOrganizerController {
 		
 		// Create a separate thread for the sound clip player and start it
 		(new Thread(new SoundClipPlayer(queue))).start();
+
+
+
 	}
 
 	/**
@@ -50,13 +58,9 @@ public class MusicOrganizerController {
 		String albumName = view.promptForAlbumName();
 
 		if (selectedAlbum != null && albumName != null) {
-			Album newAlbum = new Album(albumName);
-
-			//add the new album to the selected one
-			selectedAlbum.addSubAlbum(newAlbum);
-	
-			//add the album to the treeview
-			view.onAlbumAdded(newAlbum);
+			AddAlbum addAlbum = new AddAlbum(view,albumName,selectedAlbum);
+			addAlbum.execute();
+			undoStack.push(addAlbum);
 		}
 	}
 	
@@ -69,7 +73,10 @@ public class MusicOrganizerController {
 		if (albumToRemove != root) {
 			view.onAlbumRemoved(albumToRemove);
 
-			albumToRemove.getParentAlbum().removeSubAlbum(albumToRemove);
+			RemoveAlbum removeAlbum = new RemoveAlbum(view, albumToRemove);
+			removeAlbum.execute();
+			undoStack.push(removeAlbum);
+
 		}
 	}
 	
@@ -80,7 +87,12 @@ public class MusicOrganizerController {
 		Album selectedAlbum = view.getSelectedAlbum();
 		List<SoundClip> selectedSoundClips = view.getSelectedSoundClips();
 
-		selectedAlbum.addSoundClips(selectedSoundClips);
+		AddSoundClip addSoundClip = new AddSoundClip(view,selectedSoundClips,selectedAlbum);
+		addSoundClip.execute();
+		view.onClipsUpdated();
+
+		undoStack.push(addSoundClip);
+
 	}
 	
 	/**
@@ -90,11 +102,38 @@ public class MusicOrganizerController {
 
 		Album selectedAlbum = view.getSelectedAlbum();
 		List<SoundClip> soundClipsToDelete = view.getSelectedSoundClips();
-		selectedAlbum.removeSoundClips(soundClipsToDelete);
-		view.onClipsUpdated();
+
+		RemoveSoundClip removeSoundClip = new RemoveSoundClip(view,soundClipsToDelete,selectedAlbum);
+		removeSoundClip.execute();
+
+
+		undoStack.push(removeSoundClip);
+
+
 
 	}
-	
+
+	public void undo(){
+		if(!undoStack.isEmpty()) {
+			Command command = undoStack.pop();
+			command.undo();
+			redoStack.push(command);
+			System.out.println("Action Undone!");
+		}
+	}
+
+	public void redo(){
+		if(!redoStack.isEmpty()) {
+			Command command = redoStack.pop();
+			command.redo();
+			undoStack.push(command);
+		}
+	}
+
+
+
+
+
 	/**
 	 * Puts the selected sound clips on the queue and lets
 	 * the sound clip player thread play them. Essentially, when
