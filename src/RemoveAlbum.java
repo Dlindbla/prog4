@@ -1,8 +1,8 @@
 public class RemoveAlbum implements Command {
 
-    Album albumToRemove;
-    Album parentAlbum;
-    MusicOrganizerWindow view;
+    private Album albumToRemove;
+    private Album parentAlbum;
+    private MusicOrganizerWindow view;
 
 
 
