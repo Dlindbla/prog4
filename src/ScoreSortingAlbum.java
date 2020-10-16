@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class ScoreSortingAlbum extends SortingAlbum {
 
@@ -10,16 +11,13 @@ public class ScoreSortingAlbum extends SortingAlbum {
     }
 
     @Override
-    public Iterable<SoundClip> getSoundClips() {
+    public List<SoundClip> getSoundClips() {
         return soundClips;
     }
 
     @Override
-    void checkIfValid(SoundClip soundClip) {
-        if(soundClip.getScore() >= scoreLimit){
-            soundClips.add(soundClip);
-        }else if(soundClip.getScore() < scoreLimit){
-            soundClips.remove(soundClip);
-        }
+    public boolean checkIfValid(SoundClip soundClip) {
+        return (soundClip.getScore() >= scoreLimit);
+
     }
 }

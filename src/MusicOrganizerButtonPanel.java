@@ -60,9 +60,24 @@ public class MusicOrganizerButtonPanel extends JPanel {
 		rateButton = createRateButton();
 		toolbar.add(rateButton);
 
+
 		this.add(toolbar);
 
 	}
+
+	public void disableButtons(){
+		newAlbumButton.setEnabled(false);
+		deleteAlbumButton.setEnabled(false);
+		addSoundClipsButton.setEnabled(false);
+	}
+
+	public void activateButtons(){
+		newAlbumButton.setEnabled(true);
+		deleteAlbumButton.setEnabled(true);
+		addSoundClipsButton.setEnabled(true);
+	}
+
+
 	
 	/**
 	 * Note: You can replace the text strings in the instantiations of the JButtons
@@ -186,6 +201,8 @@ public class MusicOrganizerButtonPanel extends JPanel {
 		});
 		return redoButton;
 	}
+
+
 
 
 }

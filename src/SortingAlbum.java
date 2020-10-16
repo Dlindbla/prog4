@@ -7,7 +7,6 @@ public abstract class SortingAlbum {
     private String albumName;
 
     private List<SoundClip> soundClips = new ArrayList<SoundClip>();
-    private List<Album> subAlbums = new ArrayList<Album>();
 
     // Create a new album
     public SortingAlbum(String name,Album rootAlbum) {
@@ -15,9 +14,32 @@ public abstract class SortingAlbum {
         this.albumName = name;
     }
 
-    abstract Iterable<SoundClip> getSoundClips();
+    public void checkSoundClip(SoundClip soundClip){
+        if(soundClips.contains(soundClip)){
+            removeSoundClip(soundClip);
+        }else{
+            addSoundClip(soundClip);
+        }
+    }
 
-    abstract void checkIfValid(SoundClip soundClip);
+
+    abstract boolean checkIfValid(SoundClip soundClip);
+
+    public void addSoundClip(SoundClip soundClip){
+        if(checkIfValid(soundClip)){
+            soundClips.add(soundClip);
+        }
+    }
+    public void removeSoundClip(SoundClip soundClip){
+        if(!checkIfValid(soundClip)){
+            soundClips.remove(soundClip);
+        }
+    }
+
+
+    public List<SoundClip> getSoundClips() {
+        return soundClips;
+    }
 
     public String getAlbumName() {return albumName;}
 
