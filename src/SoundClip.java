@@ -8,6 +8,10 @@ public class SoundClip {
 
     private final File file;
 
+    private boolean isFavorited;
+
+    private int score;
+
     /**
      * Make a SoundClip from a file.
      * Requires file != null.
@@ -22,6 +26,26 @@ public class SoundClip {
      */
     public File getFile() {
         return file;
+    }
+
+    public boolean isFavorited(){
+        return isFavorited;
+    }
+
+    public void unFavorite(){
+        isFavorited = false;
+    }
+
+    public void setFavorite(){
+        isFavorited = true;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
+
+    public int getScore(){
+        return score;
     }
 
     public String toString(){

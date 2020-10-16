@@ -10,10 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultTreeSelectionModel;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 
 
 public class MusicOrganizerWindow extends JFrame {
@@ -71,7 +68,9 @@ public class MusicOrganizerWindow extends JFrame {
 
 		DefaultMutableTreeNode tree_root = new DefaultMutableTreeNode();
 		tree_root.setUserObject((Album) controller.getRootAlbum());
-		
+		tree_root.setUserObject(controller.favorites);
+
+
 		final JTree tree = new JTree(tree_root);
 		tree.setMinimumSize(new Dimension(200, 400));
 		

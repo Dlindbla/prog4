@@ -7,6 +7,8 @@ public class MusicOrganizerController {
 	private MusicOrganizerWindow view;
 	private SoundClipBlockingQueue queue;
 	private Album root;
+	public FavoritesAlbum favorites;
+
 
 	//stacks for running undo and redo commands
 	private Stack<Command> undoStack = new Stack<>();
@@ -14,7 +16,10 @@ public class MusicOrganizerController {
 
 	public MusicOrganizerController() {
 		root = new Album("All Sound Clips");
-		
+
+		favorites = new FavoritesAlbum("Favorites", root);
+
+
 		// Create the View in Model-View-Controller
 		view = new MusicOrganizerWindow(this);
 		
@@ -106,10 +111,7 @@ public class MusicOrganizerController {
 		RemoveSoundClip removeSoundClip = new RemoveSoundClip(view,soundClipsToDelete,selectedAlbum);
 		removeSoundClip.execute();
 
-
 		undoStack.push(removeSoundClip);
-
-
 
 	}
 
@@ -128,6 +130,16 @@ public class MusicOrganizerController {
 			command.redo();
 			undoStack.push(command);
 		}
+	}
+
+	public void addToFavorites(){
+		for(SoundClip soundClip: view.getSelectedSoundClips()){
+			soundClip.setFavorite();
+		}
+	}
+
+	public void rateSoundClip(){
+
 	}
 
 

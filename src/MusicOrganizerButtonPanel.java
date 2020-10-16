@@ -20,6 +20,9 @@ public class MusicOrganizerButtonPanel extends JPanel {
 
 	private JButton undoButton;
 	private JButton redoButton;
+
+	private JButton favoriteButton;
+	private JButton rateButton;
 	
 	public MusicOrganizerButtonPanel(MusicOrganizerController contr, MusicOrganizerWindow view){
 		super(new BorderLayout());
@@ -50,6 +53,12 @@ public class MusicOrganizerButtonPanel extends JPanel {
 
 		redoButton = createRedoButton();
 		toolbar.add(redoButton);
+
+		favoriteButton = createFavoriteButton();
+		toolbar.add(favoriteButton);
+
+		rateButton = createRateButton();
+		toolbar.add(rateButton);
 
 		this.add(toolbar);
 
@@ -131,7 +140,7 @@ public class MusicOrganizerButtonPanel extends JPanel {
 	}
 
 	private JButton createUndoButton(){
-		JButton undoButton = new JButton("undo");
+		JButton undoButton = new JButton("Undo");
 		undoButton.setToolTipText("Undo Latest Action");
 		undoButton.addActionListener(new ActionListener() {
 			@Override
@@ -143,12 +152,36 @@ public class MusicOrganizerButtonPanel extends JPanel {
 	}
 
 	private JButton createRedoButton(){
-		JButton redoButton = new JButton("redo");
+		JButton redoButton = new JButton("Redo");
 		redoButton.setToolTipText("Redo Latest Action");
 		redoButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
 				controller.redo();
+			}
+		});
+		return redoButton;
+	}
+
+	private JButton createFavoriteButton(){
+		JButton redoButton = new JButton("Favorite");
+		redoButton.setToolTipText("Add soundclip to favorites");
+		redoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				controller.addToFavorites();
+			}
+		});
+		return redoButton;
+	}
+
+	private JButton createRateButton(){
+		JButton redoButton = new JButton("Rate");
+		redoButton.setToolTipText("Rate the soundclip");
+		redoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				controller.rateSoundClip();
 			}
 		});
 		return redoButton;
