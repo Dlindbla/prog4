@@ -134,7 +134,7 @@ public class MusicOrganizerController {
 
 	public void addToFavorites(){
 		for(SoundClip soundClip: view.getSelectedSoundClips()){
-			soundClip.setFavorite();
+			soundClip.flag();
 		}
 	}
 

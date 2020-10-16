@@ -15,9 +15,9 @@ public class FavoritesAlbum extends SortingAlbum {
 
     @Override
     void checkIfValid(SoundClip soundClip) {
-        if(soundClip.isFavorited()){
+        if(soundClip.isFlagged()){
             soundClips.add(soundClip);
-        }else if(!soundClip.isFavorited()){
+        }else if(!soundClip.isFlagged()){
             soundClips.remove(soundClip);
         }
     }

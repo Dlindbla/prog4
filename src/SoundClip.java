@@ -8,7 +8,7 @@ public class SoundClip {
 
     private final File file;
 
-    private boolean isFavorited;
+    private boolean isFlagged;
 
     private int score;
 
@@ -28,16 +28,16 @@ public class SoundClip {
         return file;
     }
 
-    public boolean isFavorited(){
-        return isFavorited;
+    public boolean isFlagged(){
+        return isFlagged;
     }
 
-    public void unFavorite(){
-        isFavorited = false;
+    public void unFlag(){
+        isFlagged = false;
     }
 
-    public void setFavorite(){
-        isFavorited = true;
+    public void flag(){
+        isFlagged = true;
     }
 
     public void setScore(int score){
