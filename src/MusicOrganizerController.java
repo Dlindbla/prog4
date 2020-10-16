@@ -17,8 +17,6 @@ public class MusicOrganizerController {
 	public MusicOrganizerController() {
 		root = new Album("All Sound Clips");
 
-		favorites = new FavoritesAlbum("Favorites", root);
-
 
 		// Create the View in Model-View-Controller
 		view = new MusicOrganizerWindow(this);
@@ -132,10 +130,12 @@ public class MusicOrganizerController {
 		}
 	}
 
-	public void addToFavorites(){
+	public void flagSoundClip(){
 		for(SoundClip soundClip: view.getSelectedSoundClips()){
-			soundClip.flag();
+			if(soundClip.isFlagged()){soundClip.unFlag();}
+			else{soundClip.flag();}
 		}
+		view.onClipsUpdated();
 	}
 
 	public void rateSoundClip(){

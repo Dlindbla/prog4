@@ -19,7 +19,6 @@ public abstract class SortingAlbum {
 
     abstract void checkIfValid(SoundClip soundClip);
 
-
     public String getAlbumName() {return albumName;}
 
     public Album getRootAlbum(){return rootAlbum;}

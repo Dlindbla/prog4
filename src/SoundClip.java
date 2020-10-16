@@ -48,8 +48,12 @@ public class SoundClip {
         return score;
     }
 
-    public String toString(){
+    public String toString() {
+        if(isFlagged){
+            return file.getName() + " : F";
+        }
         return file.getName();
+
     }
 
     @Override

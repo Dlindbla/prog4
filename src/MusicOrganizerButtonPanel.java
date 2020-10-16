@@ -164,12 +164,12 @@ public class MusicOrganizerButtonPanel extends JPanel {
 	}
 
 	private JButton createFavoriteButton(){
-		JButton redoButton = new JButton("Favorite");
-		redoButton.setToolTipText("Add soundclip to favorites");
+		JButton redoButton = new JButton("Flag");
+		redoButton.setToolTipText("Flag SoundClip");
 		redoButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				controller.addToFavorites();
+				controller.flagSoundClip();
 			}
 		});
 		return redoButton;
