@@ -1,15 +1,13 @@
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
+import javax.swing.text.NumberFormatter;
 import javax.swing.tree.*;
 
 
@@ -139,6 +137,24 @@ public class MusicOrganizerWindow extends JFrame {
 	/**Creates a pop up window showing a message
 	 * @param message - the message to display
 	 */
+
+	//prompt user for a rating between 0 and 5 and returns the integer
+	public int promptForRating(){
+		NumberFormat format = NumberFormat.getInstance();
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(0);
+		formatter.setMaximum(5);
+		formatter.setAllowsInvalid(false);
+		formatter.setCommitsOnValidEdit(true);
+		JFormattedTextField field = new JFormattedTextField(formatter);
+		JOptionPane.showMessageDialog(null, field);
+		// getValue() always returns something valid
+		return (int) field.getValue();
+	}
+
+
+
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(this, message);
 	}
