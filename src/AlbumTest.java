@@ -14,9 +14,6 @@ class AlbumTest {
         assertEquals("root_album", rootAlbum.getAlbumName());
         assertEquals("sub_album", subAlbum.getAlbumName());
 
-        // rename and check name
-        rootAlbum.rename("root_album_renamed");
-        assertEquals("root_album_renamed", rootAlbum.getAlbumName());
 
         // check that both album doesn't have any parent
         assertNull(rootAlbum.getParentAlbum());

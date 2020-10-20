@@ -65,7 +65,7 @@ public class MusicOrganizerWindow extends JFrame {
 		
 
 		DefaultMutableTreeNode tree_root = new DefaultMutableTreeNode();
-		tree_root.setUserObject((Album) controller.getRootAlbum());
+		tree_root.setUserObject((AbstractAlbum) controller.getRootAlbum());
 
 
 
@@ -87,7 +87,7 @@ public class MusicOrganizerWindow extends JFrame {
 				// if left-double-click @@@changed =2 to ==1
 				if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2){
 					
-					Album selectedAlbum = (Album) getSelectedTreeNode().getUserObject();
+					AbstractAlbum selectedAlbum = (AbstractAlbum) getSelectedTreeNode().getUserObject();
 
 					clipTable.display(selectedAlbum);
 					
@@ -204,7 +204,7 @@ public class MusicOrganizerWindow extends JFrame {
 	 * Updates the album hierarchy with a new album
 	 * @param newAlbum
 	 */
-	public void onAlbumAdded(Album newAlbum){
+	public void onAlbumAdded(AbstractAlbum newAlbum){
 		
 		assert newAlbum != null;
 		
@@ -214,7 +214,7 @@ public class MusicOrganizerWindow extends JFrame {
 		for(Enumeration e = ((DefaultMutableTreeNode) model.getRoot()).breadthFirstEnumeration(); e.hasMoreElements();){
 			DefaultMutableTreeNode parent = (DefaultMutableTreeNode) e.nextElement();
 			
-			Album parentAlbum = newAlbum.getParentAlbum();
+			AbstractAlbum parentAlbum = newAlbum.getParentAlbum();
 			
 			if(parentAlbum.equals(parent.getUserObject())){
 				
@@ -253,7 +253,7 @@ public class MusicOrganizerWindow extends JFrame {
 	 * 
 	 */
 	public void onClipsUpdated(){
-		Album a = (Album) getSelectedTreeNode().getUserObject();
+		AbstractAlbum a = (AbstractAlbum) getSelectedTreeNode().getUserObject();
 		clipTable.display(a);
 	}
 }

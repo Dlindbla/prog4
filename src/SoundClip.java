@@ -10,7 +10,7 @@ public class SoundClip {
 
     private boolean isFlagged;
 
-    private int score;
+    private int score = 0;
 
     /**
      * Make a SoundClip from a file.
@@ -48,11 +48,16 @@ public class SoundClip {
         return score;
     }
 
+
+
     public String toString() {
+        String scoreString = "";
+        if(score != 0){scoreString = String.format("(Score : %d)",score);}
+
         if(isFlagged){
-            return file.getName() + " : F";
+            return file.getName() + " : F" + scoreString;
         }
-        return file.getName();
+        return file.getName() + scoreString;
 
     }
 

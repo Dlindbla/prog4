@@ -7,7 +7,8 @@ public class MusicOrganizerController {
 	private MusicOrganizerWindow view;
 	private SoundClipBlockingQueue queue;
 	private Album root;
-	public FavoritesAlbum favorites;
+	private FavoritesAlbum favorites;
+	private ScoreSortingAlbum greatSoundClips;
 
 
 	//stacks for running undo and redo commands
@@ -27,6 +28,9 @@ public class MusicOrganizerController {
 		// Create a separate thread for the sound clip player and start it
 		(new Thread(new SoundClipPlayer(queue))).start();
 
+		favorites = new FavoritesAlbum("Flagged SoundClips", root);
+
+		greatSoundClips = new ScoreSortingAlbum("Great SoundClips",root,4);
 
 
 	}
@@ -139,7 +143,13 @@ public class MusicOrganizerController {
 	}
 
 	public void rateSoundClip(){
+		int score = view.promptForRating();
+		for(SoundClip soundClip: view.getSelectedSoundClips()){
+			soundClip.setScore(score);
+			greatSoundClips.checkSoundClip(soundClip);
 
+		}
+		view.onClipsUpdated();
 	}
 
 

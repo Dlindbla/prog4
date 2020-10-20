@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SortingAlbum {
+public abstract class SortingAlbum extends AbstractAlbum {
 
     private Album rootAlbum;
     private String albumName;
@@ -10,12 +10,14 @@ public abstract class SortingAlbum {
 
     // Create a new album
     public SortingAlbum(String name,Album rootAlbum) {
+        super(name);
         this.rootAlbum = rootAlbum;
         this.albumName = name;
     }
 
+    //Check if a given soundClip should be added or if it already exists, should be removed
     public void checkSoundClip(SoundClip soundClip){
-        if(soundClips.contains(soundClip)){
+        if(soundClips.contains(soundClip) && checkIfValid(soundClip)){
             removeSoundClip(soundClip);
         }else{
             addSoundClip(soundClip);
@@ -31,9 +33,7 @@ public abstract class SortingAlbum {
         }
     }
     public void removeSoundClip(SoundClip soundClip){
-        if(!checkIfValid(soundClip)){
-            soundClips.remove(soundClip);
-        }
+        soundClips.remove(soundClip);
     }
 
 
@@ -44,8 +44,5 @@ public abstract class SortingAlbum {
     public String getAlbumName() {return albumName;}
 
     public Album getRootAlbum(){return rootAlbum;}
-
-    @Override
-    public String toString(){ return  albumName;}
 
 }

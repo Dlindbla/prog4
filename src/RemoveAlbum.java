@@ -9,7 +9,7 @@ public class RemoveAlbum implements Command {
     public RemoveAlbum(MusicOrganizerWindow view,Album albumToRemove){
         assert(albumToRemove != null);
         this.albumToRemove = albumToRemove;
-        this.parentAlbum = albumToRemove.getParentAlbum();
+        this.parentAlbum = (Album) albumToRemove.getParentAlbum();
         this.view = view;
     }
 

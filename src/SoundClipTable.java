@@ -19,7 +19,7 @@ public class SoundClipTable extends JList {
 	 * Displays the contents of the specified album
 	 * @param a - the album which contents are to be displayed
 	 */
-	public void display(Album a){
+	public void display(AbstractAlbum a){
 		this.clearTable();
 
 		clips.addAll(a.getSoundClips());

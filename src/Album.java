@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Album {
+public class Album extends AbstractAlbum {
     private Album parentAlbum;
     private String albumName;
 
@@ -10,8 +10,9 @@ public class Album {
 
     // Create a new album
     public Album(String name) {
+        super(name);
         assert name != null;
-        
+
         this.parentAlbum = null;
         this.albumName = name;
     }
@@ -48,6 +49,7 @@ public class Album {
         assert !containsAlbum(newAlbum);
 
         newAlbum.parentAlbum = this;
+        newAlbum.setSuperParentAlbum(this);
         subAlbums.add(newAlbum);
 
         assert containsAlbum(newAlbum);
@@ -56,7 +58,6 @@ public class Album {
     // add multiple albums as SubAlbums using an iterable
     public void addSubAlbums(Iterable<Album> newSubAlbums) {
         assert newSubAlbums != null;
-
         for (Album newAlbum : newSubAlbums) {
             addSubAlbum(newAlbum);
         }
@@ -66,16 +67,13 @@ public class Album {
     public void removeSubAlbum(Album album) {
         assert album != null;
         assert containsAlbum(album);
-
         subAlbums.remove(album);
-
         assert !containsAlbum(album);
     }
 
     // remove multiple subAlbums from the album using an iterable
     public void removeSubAlbums(Iterable<Album> subAlbumsToRemove) {
         assert subAlbumsToRemove != null;
-
         for (Album album : subAlbumsToRemove) {
             removeSubAlbum(album);
         }
@@ -84,20 +82,16 @@ public class Album {
     // remove soundclip from current and all subalbums
     public void removeSoundClip(SoundClip soundClip) {
         assert soundClip != null;
-
         soundClips.remove(soundClip);
-
         for (Album subAlbum : subAlbums) {
             subAlbum.removeSoundClip(soundClip);
         }
-
         assert !containsSoundClip(soundClip);
     }
 
     // remove multiple soundClips from the album using an iterable
     public void removeSoundClips(Iterable<SoundClip> soundClipsToRemove) {
         assert soundClipsToRemove != null;
-
         for (SoundClip soundClip : soundClipsToRemove) {
             removeSoundClip(soundClip);
         }
@@ -106,18 +100,15 @@ public class Album {
     // Check if the album (or subalbum) contains a specific soundclip
     public boolean containsSoundClip(SoundClip soundClip) {
         assert soundClip != null;
-
         return soundClips.contains(soundClip);
     }
 
     // Recursively search subAlbums for specified album, return boolean
     public boolean containsAlbum(Album album) {
         assert album != null;
-
         if (subAlbums.contains(album)) {
             return true;
         }
-        
         for (Album subAlbum : subAlbums) {
             if (subAlbum.containsAlbum(subAlbum)) {
                 return true;
@@ -126,35 +117,13 @@ public class Album {
         return false;
     }
 
-    // change the name of the album
-    public void rename(String newName) {
-        assert newName != null;
-
-        this.albumName = newName;
+    public void setSuperParentAlbum(AbstractAlbum album){
+        super.setParent(album);
     }
 
-    // returns all SoundClips
+    @Override
     public List<SoundClip> getSoundClips() {
         return soundClips;
     }
 
-    // returns the subAlbums arraylist
-    public List<Album> getSubAlbums() {
-        return subAlbums;
-    }
-
-    // returns the parentAlbum
-    public Album getParentAlbum() {
-        return parentAlbum;
-    }
-
-    // returns the album name
-    public String getAlbumName() {
-        return albumName;
-    }
-
-    @Override
-    public String toString() {
-        return albumName;
-    }
 }
