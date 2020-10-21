@@ -1,10 +1,10 @@
 public class AddAlbum implements Command {
 
-    private Album album;
-    private Album parentAlbum;
+    private AbstractAlbum album;
+    private AbstractAlbum parentAlbum;
     private MusicOrganizerWindow view;
 
-    public AddAlbum(MusicOrganizerWindow view,String albumName,Album parentAlbum){
+    public AddAlbum(MusicOrganizerWindow view,String albumName,AbstractAlbum parentAlbum){
         this.parentAlbum = parentAlbum;
         album = new Album(albumName);
         parentAlbum.addSubAlbum(album);

@@ -52,7 +52,7 @@ public class SoundClip {
 
     public String toString() {
         String scoreString = "";
-        if(score != 0){scoreString = String.format("(Score : %d)",score);}
+        if(score != 0){scoreString = String.format(" (Score : %d)",score);}
 
         if(isFlagged){
             return file.getName() + " : F" + scoreString;

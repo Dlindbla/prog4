@@ -31,9 +31,13 @@ public class MusicOrganizerWindow extends JFrame {
 		
 		// make the row of buttons
 		buttonPanel = new MusicOrganizerButtonPanel(controller, this);
-		
+
 		// make the album tree
-		albumTree = makeCatalogTree();
+		albumTree = makeCatalogTree(controller.getRootAlbum());
+
+		// make these actually appear lol
+		onAlbumAdded(controller.getFavoritesAlbum());
+		onAlbumAdded(controller.getGreatSoundClipsAlbum());
 		
 		// make the clip table
 		clipTable = makeClipTable();
@@ -61,13 +65,11 @@ public class MusicOrganizerWindow extends JFrame {
 	/**
 	 * Make the tree showing album names. 
 	 */
-	private JTree makeCatalogTree() {
-		
+	private JTree makeCatalogTree(AbstractAlbum album) {
+
 
 		DefaultMutableTreeNode tree_root = new DefaultMutableTreeNode();
-		tree_root.setUserObject((AbstractAlbum) controller.getRootAlbum());
-
-
+		tree_root.setUserObject(album);
 
 		final JTree tree = new JTree(tree_root);
 		tree.setMinimumSize(new Dimension(200, 400));
@@ -180,10 +182,10 @@ public class MusicOrganizerWindow extends JFrame {
 	 * selection.
 	 * @return the selected album
 	 */
-	public Album getSelectedAlbum() {
+	public AbstractAlbum getSelectedAlbum() {
 		DefaultMutableTreeNode node = getSelectedTreeNode();
 		if(node != null) {
-			return (Album) node.getUserObject();
+			return (AbstractAlbum) node.getUserObject();
 		} else {
 			return null;
 		}
@@ -232,7 +234,7 @@ public class MusicOrganizerWindow extends JFrame {
 	/**
 	 * Updates the album hierarchy by removing an album from it
 	 */
-	public void onAlbumRemoved(Album album){
+	public void onAlbumRemoved(AbstractAlbum album){
 		assert album != null;
 		
 		DefaultTreeModel model = (DefaultTreeModel) albumTree.getModel();

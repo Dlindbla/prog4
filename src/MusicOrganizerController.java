@@ -17,7 +17,8 @@ public class MusicOrganizerController {
 
 	public MusicOrganizerController() {
 		root = new Album("All Sound Clips");
-
+		favorites = new FavoritesAlbum("Flagged SoundClips", root);
+		greatSoundClips = new ScoreSortingAlbum("Great SoundClips", root, 4);
 
 		// Create the View in Model-View-Controller
 		view = new MusicOrganizerWindow(this);
@@ -27,12 +28,6 @@ public class MusicOrganizerController {
 		
 		// Create a separate thread for the sound clip player and start it
 		(new Thread(new SoundClipPlayer(queue))).start();
-
-		favorites = new FavoritesAlbum("Flagged SoundClips", root);
-
-		greatSoundClips = new ScoreSortingAlbum("Great SoundClips",root,4);
-
-
 	}
 
 	/**
@@ -53,18 +48,26 @@ public class MusicOrganizerController {
 	public Album getRootAlbum(){
 		return root;
 	}
+
+	public FavoritesAlbum getFavoritesAlbum() {
+		return favorites;
+	}
+
+	public ScoreSortingAlbum getGreatSoundClipsAlbum() {
+		return greatSoundClips;
+	}
 	
 	/**
 	 * Adds an album to the Music Organizer
 	 */
 	public void addNewAlbum(){
 		//get the currently selected album
-		Album selectedAlbum = view.getSelectedAlbum();
+		AbstractAlbum selectedAlbum = view.getSelectedAlbum();
 
 		//create a new album
 		String albumName = view.promptForAlbumName();
 
-		if (selectedAlbum != null && albumName != null) {
+		if (selectedAlbum != null && selectedAlbum != favorites && selectedAlbum != greatSoundClips && albumName != null) {
 			AddAlbum addAlbum = new AddAlbum(view,albumName,selectedAlbum);
 			addAlbum.execute();
 			undoStack.push(addAlbum);
@@ -75,9 +78,9 @@ public class MusicOrganizerController {
 	 * Removes an album from the Music Organizer
 	 */
 	public void deleteAlbum(){
-		Album albumToRemove = view.getSelectedAlbum();
+		AbstractAlbum albumToRemove = view.getSelectedAlbum();
 
-		if (albumToRemove != root) {
+		if (albumToRemove != null && albumToRemove != root && albumToRemove != favorites && albumToRemove != greatSoundClips) {
 			view.onAlbumRemoved(albumToRemove);
 
 			RemoveAlbum removeAlbum = new RemoveAlbum(view, albumToRemove);
@@ -91,30 +94,31 @@ public class MusicOrganizerController {
 	 * Adds sound clips to an album
 	 */
 	public void addSoundClips(){
-		Album selectedAlbum = view.getSelectedAlbum();
+		AbstractAlbum selectedAlbum = view.getSelectedAlbum();
 		List<SoundClip> selectedSoundClips = view.getSelectedSoundClips();
 
-		AddSoundClip addSoundClip = new AddSoundClip(view,selectedSoundClips,selectedAlbum);
-		addSoundClip.execute();
-		view.onClipsUpdated();
-
-		undoStack.push(addSoundClip);
-
+		if (selectedAlbum != favorites && selectedAlbum != greatSoundClips) {
+			AddSoundClip addSoundClip = new AddSoundClip(view,selectedSoundClips,selectedAlbum);
+			addSoundClip.execute();
+			view.onClipsUpdated();
+	
+			undoStack.push(addSoundClip);
+		}
 	}
 	
 	/**
 	 * Removes sound clips from an album
 	 */
 	public void removeSoundClips(){
-
-		Album selectedAlbum = view.getSelectedAlbum();
+		AbstractAlbum selectedAlbum = view.getSelectedAlbum();
 		List<SoundClip> soundClipsToDelete = view.getSelectedSoundClips();
 
-		RemoveSoundClip removeSoundClip = new RemoveSoundClip(view,soundClipsToDelete,selectedAlbum);
-		removeSoundClip.execute();
+		if (selectedAlbum != favorites && selectedAlbum != greatSoundClips) {
+			RemoveSoundClip removeSoundClip = new RemoveSoundClip(view,soundClipsToDelete,selectedAlbum);
+			removeSoundClip.execute();
 
-		undoStack.push(removeSoundClip);
-
+			undoStack.push(removeSoundClip);
+		}
 	}
 
 	public void undo(){
@@ -136,8 +140,8 @@ public class MusicOrganizerController {
 
 	public void flagSoundClip(){
 		for(SoundClip soundClip: view.getSelectedSoundClips()){
-			if(soundClip.isFlagged()){soundClip.unFlag();}
-			else{soundClip.flag();}
+			if (soundClip.isFlagged()) { soundClip.unFlag(); } else { soundClip.flag(); }
+			favorites.checkSoundClip(soundClip);
 		}
 		view.onClipsUpdated();
 	}

@@ -1,15 +1,15 @@
 public class RemoveAlbum implements Command {
 
-    private Album albumToRemove;
-    private Album parentAlbum;
+    private AbstractAlbum albumToRemove;
+    private AbstractAlbum parentAlbum;
     private MusicOrganizerWindow view;
 
 
 
-    public RemoveAlbum(MusicOrganizerWindow view,Album albumToRemove){
+    public RemoveAlbum(MusicOrganizerWindow view,AbstractAlbum albumToRemove){
         assert(albumToRemove != null);
         this.albumToRemove = albumToRemove;
-        this.parentAlbum = (Album) albumToRemove.getParentAlbum();
+        this.parentAlbum = albumToRemove.getParentAlbum();
         this.view = view;
     }
 

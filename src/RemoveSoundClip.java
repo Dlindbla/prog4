@@ -3,11 +3,11 @@ import java.util.List;
 public class RemoveSoundClip implements Command {
 
 
-    private Album album;
+    private AbstractAlbum album;
     private List<SoundClip> soundClips;
     private MusicOrganizerWindow view;
 
-    public RemoveSoundClip(MusicOrganizerWindow view,List<SoundClip> soundClips, Album album){
+    public RemoveSoundClip(MusicOrganizerWindow view,List<SoundClip> soundClips, AbstractAlbum album){
         this.soundClips = soundClips;
         this.album = album;
         this.view = view;

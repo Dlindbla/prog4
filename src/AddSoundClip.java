@@ -2,11 +2,11 @@ import java.util.List;
 
 public class AddSoundClip implements Command{
 
-    private Album album;
+    private AbstractAlbum album;
     private List<SoundClip> soundClips;
     private MusicOrganizerWindow view;
 
-    public AddSoundClip(MusicOrganizerWindow view,List<SoundClip> soundClips, Album album){
+    public AddSoundClip(MusicOrganizerWindow view,List<SoundClip> soundClips, AbstractAlbum album){
         this.soundClips = soundClips;
         this.album = album;
         this.view = view;

@@ -2,23 +2,88 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractAlbum {
-    private AbstractAlbum parentAlbum;
-    private String albumName;
+    protected AbstractAlbum parentAlbum;
+    protected String albumName;
 
-    private List<SoundClip> soundClips = new ArrayList<SoundClip>();
-    private List<Album> subAlbums = new ArrayList<Album>();
+    protected List<SoundClip> soundClips = new ArrayList<SoundClip>();
+    protected List<AbstractAlbum> subAlbums = new ArrayList<AbstractAlbum>();
 
     // Create a new album
     public AbstractAlbum(String name) {
         assert name != null;
-        this.parentAlbum = null;
         this.albumName = name;
     }
 
+    
+    // add a single SubAlbum
+    public void addSubAlbum(AbstractAlbum newAlbum) {
+        assert newAlbum != null;
+        assert !containsAlbum(newAlbum);
 
-    public abstract void addSoundClip(SoundClip soundClip);
+        newAlbum.parentAlbum = this;
+        subAlbums.add(newAlbum);
 
-    public abstract void removeSoundClip(SoundClip soundClip);
+        assert containsAlbum(newAlbum);
+    }
+
+    // remove a specified subAlbum from the album
+    public void removeSubAlbum(AbstractAlbum album) {
+        assert album != null;
+        assert containsAlbum(album);
+        subAlbums.remove(album);
+        assert !containsAlbum(album);
+    }
+
+    // Recursively search subAlbums for specified album, return boolean
+    public boolean containsAlbum(AbstractAlbum album) {
+        assert album != null;
+        if (subAlbums.contains(album)) {
+            return true;
+        }
+        for (AbstractAlbum subAlbum : subAlbums) {
+            if (subAlbum.containsAlbum(subAlbum)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // add a single soundclip to the album
+    public void addSoundClip(SoundClip soundClip) {
+        assert soundClip != null;
+
+        if (!containsSoundClip(soundClip)) {
+            // add to current album
+            soundClips.add(soundClip);
+
+            // add to all parent albums
+            if (parentAlbum != null) {
+                parentAlbum.addSoundClip(soundClip);
+            }
+        }
+
+        assert containsSoundClip(soundClip);
+    }
+
+    // remove soundclip from current and all subalbums
+    public void removeSoundClip(SoundClip soundClip) {
+        assert soundClip != null;
+
+        soundClips.remove(soundClip);
+        for (AbstractAlbum subAlbum : subAlbums) {
+            subAlbum.removeSoundClip(soundClip);
+        }
+        assert !containsSoundClip(soundClip);
+    }
+
+    // add multiple SoundClips to the album using an iterable
+    public void addSoundClips(Iterable<SoundClip> newSoundClips) {
+        assert newSoundClips != null;
+
+        for (SoundClip soundClip : newSoundClips) {
+            addSoundClip(soundClip);
+        }
+    }
 
     // Check if the album (or subalbum) contains a specific soundclip
     public boolean containsSoundClip(SoundClip soundClip) {
@@ -34,7 +99,7 @@ public abstract class AbstractAlbum {
     }
 
     // returns the subAlbums arraylist
-    public List<Album> getSubAlbums() {
+    public List<AbstractAlbum> getSubAlbums() {
         return subAlbums;
     }
 
@@ -51,7 +116,6 @@ public abstract class AbstractAlbum {
     public void setParent(AbstractAlbum album){
         parentAlbum = album;
     }
-
 
     @Override
     public String toString() {
